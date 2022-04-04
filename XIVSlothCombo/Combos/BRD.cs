@@ -659,21 +659,7 @@ namespace XIVSlothComboPlugin.Combos
                                     else return BRD.HeavyShot;
                                 }
                             }
-                            if (subStep == 9)
-                            {
-                                if (gauge.Song == Song.WANDERER && gauge.Repertoire == 3 && canWeave)
-                                {
-                                    usedPitchPerfect = true;
-                                    return BRD.PitchPerfect;
-                                }
-                                else if (!(GetRemainingCharges(BRD.Bloodletter) < 2) && canWeave && !usedPitchPerfect )
-                                {
-                                    return BRD.Bloodletter;
-                                }
-                                else subStep++;
 
-                            }
-                            
                             if (HasEffect(BRD.Buffs.StraightShotReady)) step = 1;
                             else step = 2;
 
@@ -706,6 +692,14 @@ namespace XIVSlothComboPlugin.Combos
                             }
                             if (subStep == 2)
                             {
+                                usedPitchPerfect = false;
+
+
+                                if (HasEffect(BRD.Buffs.Barrage) || IsOnCooldown(BRD.Barrage)) subStep++;
+                                else return BRD.Barrage;
+                            }
+                            if (subStep == 3)
+                            {
                                 if (gauge.Song == Song.WANDERER && gauge.Repertoire == 3 && canWeave)
                                 {
                                     usedPitchPerfect = true;
@@ -716,14 +710,6 @@ namespace XIVSlothComboPlugin.Combos
                                     return BRD.Bloodletter;
                                 }
                                 else subStep++;
-                            }
-                            if (subStep == 3)
-                            {
-                                usedPitchPerfect = false;
-                               
-
-                                if (HasEffect(BRD.Buffs.Barrage) || IsOnCooldown(BRD.Barrage)) subStep++;
-                                else return BRD.Barrage;
                             }
                             if (subStep == 4)
                             {
@@ -856,6 +842,13 @@ namespace XIVSlothComboPlugin.Combos
                             }
                             if (subStep == 2)
                             {
+                                usedPitchPerfect = false;
+
+                                if (IsOnCooldown(BRD.Sidewinder)) subStep++;
+                                else return BRD.Sidewinder;
+                            }
+                            if (subStep == 3)
+                            {
                                 if (gauge.Song == Song.WANDERER && gauge.Repertoire == 3 && canWeave)
                                 {
                                     usedPitchPerfect = true;
@@ -866,13 +859,6 @@ namespace XIVSlothComboPlugin.Combos
                                     return BRD.Bloodletter;
                                 }
                                 else subStep++;
-                            }
-                            if (subStep == 3)
-                            {
-                                usedPitchPerfect = false;
-
-                                if (IsOnCooldown(BRD.Sidewinder)) subStep++;
-                                else return BRD.Sidewinder;
                             }
                             if (subStep == 4)
                             {
@@ -1071,7 +1057,7 @@ namespace XIVSlothComboPlugin.Combos
                 {
                     if (level >= BRD.Levels.RagingStrikes && IsOffCooldown(BRD.RagingStrikes) && GetCooldown(BRD.BattleVoice).CooldownRemaining < 5 )
                         return BRD.RagingStrikes;
-                    if (IsEnabled(CustomComboPreset.BardSimpleBuffsRadiantFeature) && Array.TrueForAll(gauge.Coda, BRD.SongIsNotNone) && IsOffCooldown(BRD.BattleVoice))
+                    if (IsEnabled(CustomComboPreset.BardSimpleBuffsRadiantFeature) && IsOffCooldown(BRD.BattleVoice))
                     {
                         if (level >= BRD.Levels.RadiantFinale && IsOffCooldown(BRD.RadiantFinale))
                         {
