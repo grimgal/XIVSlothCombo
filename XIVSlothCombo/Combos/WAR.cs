@@ -343,9 +343,8 @@ namespace XIVSlothComboPlugin.Combos
                         internalReleaseSteps++;
                     }
 
-                    // 120s Party Buff Window
-                    if (!inCombat ||
-                        (lastComboActionID == WAR.InnerRelease && internalReleaseSteps >= 2))
+                    // Inner Release is on a 60s CD; x2 uses should mean we're ready to do our opener again in the party buff window
+                    if (!inCombat || (lastComboActionID == WAR.InnerRelease && internalReleaseSteps >= 2))
                     {
                         step = 0;
                         inOpener = false;
