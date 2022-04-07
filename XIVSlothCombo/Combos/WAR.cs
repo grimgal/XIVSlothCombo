@@ -391,7 +391,8 @@ namespace XIVSlothComboPlugin.Combos
                     {
                         if (!HasEffect(WAR.Buffs.NascentChaos))
                         {
-                            if (GetRemainingCharges(WAR.Infuriate) == 2)
+                            if (GetRemainingCharges(WAR.Infuriate) == 2 ||
+                               (GetRemainingCharges(WAR.Infuriate) == 1 && GetCooldown(WAR.Infuriate).ChargeCooldownRemaining <= 7))
                             {
                                 return WAR.Infuriate;
                             }
@@ -471,14 +472,23 @@ namespace XIVSlothComboPlugin.Combos
 
                 if (HasEffect(WAR.Buffs.SurgingTempest))
                 {
-                    if (HasEffect(WAR.Buffs.PrimalRendReady))
+                    if (lastComboActionID != WAR.InnerRelease &&
+                        HasEffect(WAR.Buffs.PrimalRendReady) && FindEffect(WAR.Buffs.PrimalRendReady).RemainingTime <= 5)
                     {
                         return WAR.PrimalRend;
                     }
 
+                    // 5s + 2.5s + 2.5s = 10s early delay
+                    var predictedCD = 10;
+                    if (GetCooldown(WAR.InnerRelease).ChargeCooldownRemaining <= 15)
+                    {
+                        // 5 + 5 + 5 + 2.5 + 2.5 + 2.5 = 15 + 7.5 + 22.5 ~= 23s delay for upcoming inner release
+                        predictedCD += 23;
+                    }
+
                     if (gauge.BeastGauge >= 50 &&
                         (GetRemainingCharges(WAR.Infuriate) == 2 || inOpener ||
-                        (GetRemainingCharges(WAR.Infuriate) == 1 && GetCooldown(WAR.Infuriate).ChargeCooldownRemaining <= 4)))
+                        (GetRemainingCharges(WAR.Infuriate) == 1 && GetCooldown(WAR.Infuriate).ChargeCooldownRemaining <= predictedCD)))
                     {
                         return OriginalHook(WAR.InnerBeast);
                     }
