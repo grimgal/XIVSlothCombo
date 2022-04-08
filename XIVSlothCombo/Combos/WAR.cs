@@ -444,26 +444,29 @@ namespace XIVSlothComboPlugin.Combos
 
                         if (level >= WAR.Levels.Onslaught)
                         {
-                            if (inOpener)
+                            if (IsEnabled(CustomComboPreset.WarriorSimpleOnslaughtFeature))
                             {
-                                if (HasEffect(WAR.Buffs.InnerRelease) && GetRemainingCharges(WAR.Onslaught) > 0)
+                                if (inOpener)
                                 {
-                                    if (lastComboActionID != WAR.Onslaught)
+                                    if (HasEffect(WAR.Buffs.InnerRelease) && GetRemainingCharges(WAR.Onslaught) > 0)
+                                    {
+                                        if (lastComboActionID != WAR.Onslaught)
+                                        {
+                                            return WAR.Onslaught;
+                                        }
+                                    }
+                                }
+                                else
+                                {
+                                    uint onslaughtChargesTarget = 2;
+                                    if (level < WAR.Levels.PrimalRend)
+                                    {
+                                        onslaughtChargesTarget = 1;
+                                    }
+                                    if (GetRemainingCharges(WAR.Onslaught) > onslaughtChargesTarget)
                                     {
                                         return WAR.Onslaught;
                                     }
-                                }
-                            }
-                            else if (IsEnabled(CustomComboPreset.WarriorSimpleOnslaughtFeature))
-                            {
-                                uint onslaughtChargesTarget = 2;
-                                if (level < WAR.Levels.PrimalRend)
-                                {
-                                    onslaughtChargesTarget = 1;
-                                }
-                                if (GetRemainingCharges(WAR.Onslaught) > onslaughtChargesTarget)
-                                {
-                                    return WAR.Onslaught;
                                 }
                             }
                         }
@@ -473,14 +476,15 @@ namespace XIVSlothComboPlugin.Combos
                 if (HasEffect(WAR.Buffs.SurgingTempest))
                 {
                     if (lastComboActionID != WAR.InnerRelease &&
-                        HasEffect(WAR.Buffs.PrimalRendReady) && FindEffect(WAR.Buffs.PrimalRendReady).RemainingTime <= 5)
+                        HasEffect(WAR.Buffs.PrimalRendReady) && FindEffect(WAR.Buffs.PrimalRendReady).RemainingTime <= 5 &&
+                        GetCooldown(WAR.InnerRelease).CooldownRemaining <= 50)
                     {
                         return WAR.PrimalRend;
                     }
 
                     // 5s + 2.5s + 2.5s = 10s early delay
                     var predictedCD = 10;
-                    if (GetCooldown(WAR.InnerRelease).ChargeCooldownRemaining <= 15)
+                    if (GetCooldown(WAR.InnerRelease).CooldownRemaining <= 15)
                     {
                         // 5 + 5 + 5 + 2.5 + 2.5 + 2.5 = 15 + 7.5 + 22.5 ~= 23s delay for upcoming inner release
                         predictedCD += 23;
