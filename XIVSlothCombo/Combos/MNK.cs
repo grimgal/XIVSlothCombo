@@ -280,7 +280,7 @@ namespace XIVSlothComboPlugin.Combos
             {
                 var inCombat = HasCondition(Dalamud.Game.ClientState.Conditions.ConditionFlag.InCombat);
                 var gauge = GetJobGauge<MNKGauge>();
-                var canWeave = CanWeave(actionID, 0.4);
+                var canWeave = CanWeave(actionID, 0.45);
                 var canWeaveChakra = CanWeave(actionID);
 
                 var twinsnakeDuration = FindEffectAny(MNK.Buffs.DisciplinedFist);
@@ -354,19 +354,20 @@ namespace XIVSlothComboPlugin.Combos
                                 }
                                 if (IsOnCooldown(MNK.RiddleOfFire) && GetCooldownRemainingTime(MNK.RiddleOfFire) <= 59)
                                 {
-                                    if (HasEffect(MNK.Buffs.RaptorForm) || HasEffect(MNK.Buffs.CoerlForm) || lastComboMove == MNK.Bootshine || lastComboMove == MNK.DragonKick || lastComboMove == MNK.Brotherhood)
+                                    if ((HasEffect(MNK.Buffs.RaptorForm) || HasEffect(MNK.Buffs.CoerlForm)) && 
+                                        (lastComboMove == MNK.Bootshine || lastComboMove == MNK.DragonKick || 
+                                        lastComboMove == MNK.TwinSnakes || lastComboMove == MNK.TrueStrike || lastComboMove == MNK.Brotherhood))
                                     {
                                         if (level >= MNK.Levels.Brotherhood && !IsOnCooldown(MNK.Brotherhood))
                                         {
                                             return MNK.Brotherhood;
                                         }
-                                        if (GetRemainingCharges(MNK.PerfectBalance) > 0 && !HasEffect(MNK.Buffs.PerfectBalance) && 
-                                            !HasEffect(MNK.Buffs.LeadenFist) && OriginalHook(MNK.MasterfulBlitz) == MNK.MasterfulBlitz)
+                                        if (GetRemainingCharges(MNK.PerfectBalance) > 0 && !HasEffect(MNK.Buffs.PerfectBalance) && !HasEffect(MNK.Buffs.LeadenFist) && OriginalHook(MNK.MasterfulBlitz) == MNK.MasterfulBlitz)
                                         {
                                             return MNK.PerfectBalance;
                                         }
                                     }
-                                    if (level >= MNK.Levels.RiddleOfWind && HasEffect(MNK.Buffs.PerfectBalance) && !IsOnCooldown(MNK.RiddleOfWind) && canWeaveChakra)
+                                    if (level >= MNK.Levels.RiddleOfWind && HasEffect(MNK.Buffs.PerfectBalance) && !IsOnCooldown(MNK.RiddleOfWind))
                                     {
                                         return MNK.RiddleOfWind;
                                     }
@@ -499,7 +500,7 @@ namespace XIVSlothComboPlugin.Combos
                 // Monk Rotation
                 if (level >= MNK.Levels.DragonKick && (HasEffect(MNK.Buffs.OpoOpoForm) || HasEffect(MNK.Buffs.FormlessFist)))
                 {
-                    if (HasEffectAny(MNK.Buffs.LeadenFist))
+                    if (HasEffect(MNK.Buffs.LeadenFist))
                     {
                         return MNK.Bootshine;
                     }
@@ -521,6 +522,7 @@ namespace XIVSlothComboPlugin.Combos
                     }
                     return MNK.SnapPunch;
                 }
+                return MNK.Bootshine;
             }
             return actionID;
         }
