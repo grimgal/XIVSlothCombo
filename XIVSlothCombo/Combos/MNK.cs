@@ -421,7 +421,7 @@ namespace XIVSlothComboPlugin.Combos
                             ((GetRemainingCharges(MNK.PerfectBalance) == 2) ||
                             (GetRemainingCharges(MNK.PerfectBalance) >= 1 && HasEffect(MNK.Buffs.Brotherhood)) ||
                             (GetRemainingCharges(MNK.PerfectBalance) >= 1 && FindEffect(MNK.Buffs.RiddleOfFire).RemainingTime < 10 && demolishDuration.RemainingTime > 8) ||
-                            (GetRemainingCharges(MNK.PerfectBalance) >= 1 && GetCooldownRemainingTime(MNK.RiddleOfFire) <= 2 && GetCooldownRemainingTime(MNK.Brotherhood) <= 8)))
+                            (GetRemainingCharges(MNK.PerfectBalance) >= 1 && GetCooldownRemainingTime(MNK.RiddleOfFire) <= 3 && GetCooldownRemainingTime(MNK.Brotherhood) <= 9)))
                         {
                             return MNK.PerfectBalance;
                         }
