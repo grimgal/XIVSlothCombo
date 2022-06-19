@@ -202,7 +202,7 @@ namespace XIVSlothCombo.Combos.PvE
                     var polyToStore = PluginConfiguration.GetCustomIntValue(Config.BLM_PolyglotsStored);
 
                     // Polyglot usage
-                    if (IsEnabled(CustomComboPreset.BLM_AoE_Simple_Foul) && level >= Levels.Manafont && level >= Levels.Foul)
+                    if (IsEnabled(CustomComboPreset.BLM_AoE_Simple_Foul) && level is >= Levels.Manafont and >= Levels.Foul)
                     {
                         if (gauge.InAstralFire && currentMP <= MP.AspectFire && IsOffCooldown(Manafont) && CanSpellWeave(actionID) && lastComboMove == Foul)
                         {
@@ -395,7 +395,7 @@ namespace XIVSlothCombo.Combos.PvE
                                     }
 
                                     // Manafont
-                                    if (IsOffCooldown(Manafont) && (lastComboMove == Despair || lastComboMove == Fire))
+                                    if (IsOffCooldown(Manafont) && lastComboMove is Despair or Fire)
                                     {
                                         if (level >= Levels.Despair)
                                         {
@@ -509,7 +509,7 @@ namespace XIVSlothCombo.Combos.PvE
                                 }
                                 if (HasEffect(Buffs.Thundercloud))
                                 {
-                                    if (lastComboMove != Thunder && lastComboMove != Thunder3 && lastComboMove != Thunder2 && lastComboMove != Thunder4 &&
+                                    if (lastComboMove is not (Thunder or Thunder3 or Thunder2 or Thunder4) &&
                                         !TargetHasEffect(Debuffs.Thunder2) && !TargetHasEffect(Debuffs.Thunder4))
                                     {
                                         if (level >= Levels.Thunder3 && thunder3Recast(4))
@@ -548,7 +548,7 @@ namespace XIVSlothCombo.Combos.PvE
                         // Thunder uptime
                         if (IsEnabled(CustomComboPreset.BLM_Thunder) && gauge.ElementTimeRemaining >= astralFireRefresh)
                         {
-                            if (lastComboMove != Thunder && lastComboMove != Thunder3 && lastComboMove != Thunder2 && lastComboMove != Thunder4 && 
+                            if (lastComboMove is not (Thunder or Thunder3 or Thunder2 or Thunder4) &&
                                 !TargetHasEffect(Debuffs.Thunder2) && !TargetHasEffect(Debuffs.Thunder4))
                             {
                                 if (HasEffect(Buffs.Thundercloud) || (IsEnabled(CustomComboPreset.BLM_ThunderUptime) && currentMP >= MP.AspectThunder))
@@ -916,7 +916,7 @@ namespace XIVSlothCombo.Combos.PvE
                             }
 
                             // Cast Despair
-                            if (currentMP < MP.AspectFire && currentMP >= MP.Despair)
+                            if (currentMP is < MP.AspectFire and >= MP.Despair)
                             {
                                 return Despair;
                             }
@@ -1096,7 +1096,7 @@ namespace XIVSlothCombo.Combos.PvE
                         }
 
                         // Early Despair
-                        if (currentMP < (MP.AspectFire + MP.Despair) && currentMP >= MP.Despair)
+                        if (currentMP is < MP.AspectFire + MP.Despair and >= MP.Despair)
                         {
                             return Despair;
                         }
@@ -1111,7 +1111,7 @@ namespace XIVSlothCombo.Combos.PvE
                         if (currentMP < MP.AspectFire && lastComboMove != Manafont && IsOnCooldown(Manafont) && GetCooldownRemainingTime(Manafont) <= 118)
                         {
                             if ((HasEffect(Buffs.LeyLines) && GetBuffRemainingTime(Buffs.LeyLines) >= 15) || HasEffect(Buffs.Firestarter) ||
-                                 lastComboMove == Xenoglossy || lastComboMove == Thunder3 || (IsOffCooldown(All.Swiftcast) && (gauge.PolyglotStacks == 2)))
+                                lastComboMove is Xenoglossy or Thunder3 || (IsOffCooldown(All.Swiftcast) && (gauge.PolyglotStacks == 2)))
                             {
                                 if (lastComboMove != Despair && lastComboMove != Fire4)
                                 {
